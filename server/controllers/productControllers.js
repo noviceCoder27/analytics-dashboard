@@ -1,5 +1,10 @@
 import Product from './../models/product.js'
 
+const checkMonth = (providedMonth,saleDate) => {
+  const saleMonth = new Date(saleDate).getMonth() + 1;
+  return saleMonth === parseInt(providedMonth);
+}
+
 export const getAllTransactions = async(req,res) => {
     const { page, month,search } = req.query;
     const perPage = 10;
@@ -7,9 +12,8 @@ export const getAllTransactions = async(req,res) => {
     const transactions = await Product.find({}).skip((page - 1) * perPage).limit(perPage);
     for(const transaction of transactions) {
       const {title,description,price,dateOfSale} = transaction;
-      const saleMonth = new Date(dateOfSale).getMonth() + 1;
       if(title.includes(search) || description.includes(search) || String(price).includes(search)) {
-        if(saleMonth === parseInt(month)) {
+        if(checkMonth(month,dateOfSale)) {
           resultingTransactions.push(transaction);
         }
       }
@@ -25,8 +29,7 @@ export const getStats = async(req,res,flag) => {
   let totalPrice = 0;
   for(const transaction of transactions) {
     const {sold,price,dateOfSale} = transaction;
-    const saleMonth = new Date(dateOfSale).getMonth() + 1;
-    if(saleMonth === parseInt(month)) {
+    if(checkMonth(month,dateOfSale)) {
       if(sold) {
         itemsSold++;
         totalPrice += price
@@ -54,8 +57,7 @@ export const barChartData = async(req,res,flag) => {
   const transactions = await Product.find({});
   for(const transaction of transactions) {
     const {price,dateOfSale} = transaction;
-    const saleMonth = new Date(dateOfSale).getMonth() + 1;
-    if(saleMonth === parseInt(month)) {
+    if(checkMonth(month,dateOfSale)) {
       const index = Math.min(Math.floor(price / 100), ranges.length - 1);
       counts[ranges[index]]++;
     }
@@ -73,8 +75,7 @@ export const pieChartData = async(req,res,flag) => {
   const transactions = await Product.find({});
   for(const transaction of transactions) {
     const {category,dateOfSale} = transaction;
-    const saleMonth = new Date(dateOfSale).getMonth() + 1;
-    if(saleMonth === parseInt(month)) {
+    if(checkMonth(month,dateOfSale)) {
       categoriesCount[category] ? categoriesCount[category]++: categoriesCount[category] = 1;
     }
   }
