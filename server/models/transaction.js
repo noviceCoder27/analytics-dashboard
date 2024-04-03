@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 
 
 
-const ProductSchema = new Schema({
-    id: {type: Number, required: true},
+const TransactionSchema = new Schema({
+    id: {type: Number, required: true,unique: true},
     title: {type: String, required: true},
     price: {type: Number, required: true},
     description: {type: String, required: true},
@@ -16,5 +16,5 @@ const ProductSchema = new Schema({
 });
 
 
-const Product = mongoose.model('Product',ProductSchema);
-export default Product;
+const Transaction = mongoose.model('Transaction',TransactionSchema);
+export default Transaction;

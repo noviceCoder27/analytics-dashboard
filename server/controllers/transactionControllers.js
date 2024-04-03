@@ -1,15 +1,29 @@
-import Product from './../models/product.js'
+import Transaction from '../models/transaction.js'
+import axios from 'axios'
 
 const checkMonth = (providedMonth,saleDate) => {
   const saleMonth = new Date(saleDate).getMonth() + 1;
   return saleMonth === parseInt(providedMonth);
 }
 
+export const seedData = async(req,res) => {
+    const response = await axios.get("https://s3.amazonaws.com/roxiler.com/product_transaction.json");
+    const {data} = response;
+    const transactions = await Transaction.find({});
+    const ids = transactions.map(item => item.id);
+    for(const item of data) {
+      if(!ids.includes(item.id)) {
+        await Transaction.create(item);
+      }
+    }
+    res.status(200).json({msg: "Seed successfull"});
+}
+
 export const getAllTransactions = async(req,res) => {
     const { page, month,search } = req.query;
     const perPage = 10;
     const resultingTransactions = [];
-    const transactions = await Product.find({}).skip((page - 1) * perPage).limit(perPage);
+    const transactions = await Transaction.find({}).skip((page - 1) * perPage).limit(perPage);
     for(const transaction of transactions) {
       const {title,description,price,dateOfSale} = transaction;
       if(title.includes(search) || description.includes(search) || String(price).includes(search)) {
@@ -21,9 +35,9 @@ export const getAllTransactions = async(req,res) => {
     res.json(resultingTransactions);
 }
 
-export const getStats = async(req,res,flag) => {
+export const getStats = async(req,res,next,flag) => {
   const {month} = req.query;
-  const transactions = await Product.find({});
+  const transactions = await Transaction.find({});
   let itemsSold = 0;
   let itemsUnsold = 0;
   let totalPrice = 0;
@@ -45,7 +59,7 @@ export const getStats = async(req,res,flag) => {
   }
 }
 
-export const barChartData = async(req,res,flag) => {
+export const barChartData = async(req,res,next,flag) => {
   const {month} = req.query;
   const ranges = ['0-100', '101-200', '201-300', '301-400', '401-500', '501-600', '601-700', '701-800', '801-900', '901-above'];
   const counts = {};
@@ -54,7 +68,7 @@ export const barChartData = async(req,res,flag) => {
       counts[range] = 0;
   });
 
-  const transactions = await Product.find({});
+  const transactions = await Transaction.find({});
   for(const transaction of transactions) {
     const {price,dateOfSale} = transaction;
     if(checkMonth(month,dateOfSale)) {
@@ -69,10 +83,10 @@ export const barChartData = async(req,res,flag) => {
   }
 }
 
-export const pieChartData = async(req,res,flag) => {
+export const pieChartData = async(req,res,next,flag) => {
   const {month} = req.query;
   const categoriesCount = {};
-  const transactions = await Product.find({});
+  const transactions = await Transaction.find({});
   for(const transaction of transactions) {
     const {category,dateOfSale} = transaction;
     if(checkMonth(month,dateOfSale)) {
@@ -87,11 +101,11 @@ export const pieChartData = async(req,res,flag) => {
 }
 
 
-export const combinedData = async(req,res) => {
+export const combinedData = async(req,res,next) => {
   let statistics,barData,pieData;
-  statistics = await getStats(req,res,true);
-  barData = await barChartData(req,res,true);
-  pieData = await pieChartData(req,res,true);
+  statistics = await getStats(req,res,next,true);
+  barData = await barChartData(req,res,next,true);
+  pieData = await pieChartData(req,res,next,true);
   res.status(200).json({stats: statistics,barchart_data: barData,piechart_data: pieData});
 }
 
