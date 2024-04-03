@@ -38,10 +38,10 @@ const BarChart = () => {
 
     return (
         <>
-            <Box mb = "2rem">
+            <Flex mb = "2rem" alignItems= "center" justifyContent= "space-between">
                 <Heading mb = "2rem">Price Range Stats</Heading>
-                <MonthSelect cursor = "pointer" month = {month} setmonth = {setMonth}/>
-            </Box>
+                <MonthSelect w = "150px" cursor = "pointer" month = {month} setmonth = {setMonth}/>
+            </Flex>
             {stats ?  
             <Box direction = "column">
                 <Bar data = {data} options={config}/>

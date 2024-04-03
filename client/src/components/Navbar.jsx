@@ -12,7 +12,7 @@ const Navbar = () => {
     setApplyColor(obj);
   }
   return (
-    <Box minH= "100vh" bgColor = "#5b7cfd" color = "white">
+    <Box minH= "100vh" bgColor = "#5b7cfd" color = "white" >
       <Heading p = "2rem">Admin Panel</Heading>
       <Flex direction = "column" mt = "1rem">
         <Link to = "/">

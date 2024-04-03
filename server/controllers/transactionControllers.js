@@ -35,6 +35,11 @@ export const getAllTransactions = async(req,res) => {
     res.json(resultingTransactions);
 }
 
+export const getTotalTransactionCount = async(req,res) => {
+  const transactions = await Transaction.find({});
+  res.status(200).json({total: transactions.length});
+}
+
 export const getStats = async(req,res,next,flag) => {
   const {month} = req.query;
   const transactions = await Transaction.find({});
