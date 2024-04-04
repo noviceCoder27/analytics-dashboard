@@ -10,9 +10,10 @@ dotenv.config();
 
 
 const app = express();
+
 app.use(cors({
-    origin: ["https://analytics-dashboard-six-sand.vercel.app"],
-    methods: ["GET"],
+    origin: [`${process.env.CLIENT_URL}`],
+    methods: ["GET","POST","PATCH", "DELETE"],
     credentials: true
 }));
 app.use(express.json());
