@@ -12,7 +12,11 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(cors());
+app.use(cors({
+    origin: [`${process.env.CLIENT_URL}`],
+    methods: ["GET"],
+    credentials: true
+}));
 app.get('/',(req,res) => {
     res.status(200).json({msg: "Server is running"});
 });
