@@ -5,11 +5,13 @@ import transactionRoutes from './routes/transactionRoutes.js'
 import dotenv from 'dotenv'
 import errorHandler from './middleware/errorHandler.js'
 import routeHandler from './middleware/routeHandler.js'
+import allowCors from './utils/vercelCors.js';
 dotenv.config();
 
 
 
 const app = express();
+app.use(allowCors());
 app.use(cors({
     origin: [`${process.env.CLIENT_URL}`],
     methods: ["GET"],
