@@ -12,9 +12,9 @@ const Navbar = () => {
     setApplyColor(obj);
   }
   return (
-    <Box minH= "100vh" bgColor = "#5b7cfd" color = "white" >
+    <Box minH= {{lg:"100vh"}} bgColor = "#5b7cfd" color = "white" w= {{base: "100%" ,lg: "20%"}} minW = "300px" display= {{base: "flex",lg: "block"}} flexWrap = "wrap">
       <Heading p = "2rem">Admin Panel</Heading>
-      <Flex direction = "column" mt = "1rem">
+      <Flex direction = {{lg: "column"}} mt = "1rem">
         <Link to = "/">
           <Text 
           display = "flex" 

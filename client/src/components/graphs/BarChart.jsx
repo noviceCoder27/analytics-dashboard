@@ -40,7 +40,7 @@ const BarChart = () => {
         <>
             <Flex mb = "2rem" alignItems= "center" justifyContent= "space-between">
                 <Heading mb = "2rem">Price Range Stats</Heading>
-                <MonthSelect w = "150px" cursor = "pointer" month = {month} setmonth = {setMonth}/>
+                <MonthSelect w = "150px" cursor = "pointer" month = {month} onChange = {setMonth}/>
             </Flex>
             {stats ?  
             <Box direction = "column">

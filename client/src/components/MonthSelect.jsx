@@ -1,9 +1,9 @@
 import {Select} from '@chakra-ui/react'
 
 const MonthSelect = ({...props}) => {
-    
+
     return (
-        <Select {...props} value = {props.month} onChange = {(e) => props.setmonth(e.target.value)}>
+        <Select {...props} value = {props.month} onChange = {(e) => props.onChange(e.target.value)}>
             <option value = {1}>January</option>
             <option value = {2}>February</option>
             <option value = {3}>March</option>

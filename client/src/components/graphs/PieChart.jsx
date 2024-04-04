@@ -48,7 +48,7 @@ const PieChart = () => {
         <>
             <Box mb = "2rem">
                 <Heading mb = "2rem">Categories</Heading>
-                <MonthSelect cursor = "pointer" month = {month} setmonth = {setMonth}/>
+                <MonthSelect cursor = "pointer" month = {month} onChange = {setMonth}/>
             </Box>
             {stats ?  
             <Box direction = "column">

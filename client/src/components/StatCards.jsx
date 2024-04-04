@@ -11,19 +11,19 @@ const StatCards = () => {
         <Box  w = {{xl: "100%"}} height = "fit-content" bgColor = "white" p = "2rem" borderRadius= "20px" boxShadow= "rgba(149, 157, 165, 0.2) 0px 8px 24px">
             <Flex mb = "2rem" justifyContent= "space-between" alignItems= "center">
                 <Heading>Statistics</Heading>
-                <MonthSelect w= "150px" cursor= "pointer" month = {month} setmonth = {setMonth}/>
+                <MonthSelect w= "150px" cursor= "pointer" month = {month} onChange = {setMonth}/>
             </Flex>
-            <Flex gap = '2rem' >
+            <Flex gap = '2rem' flexWrap= {{base: "wrap",md: "nowrap"}}>
                 {loading ? <Spinner ml = "auto" mr = "auto" mt = "3rem" size = "xl"/> :
                 <>
                     <Box 
                     bgColor = "#4d4cac" 
                     color = "white" 
                     p = "2rem" 
-                    h = "fit-content" 
+                    flexGrow = "1"  
                     textAlign= "center" 
                     borderRadius= "10px"
-                    w = "14vw"
+                    w = {{base: "100%", xl: "14vw"}}
                     fontWeight= "bold"
                     >
                         <Text fontSize = "clamp(1.2rem,2vw,2.5rem)">{Math.floor(data?.sale_amount)}</Text>
@@ -33,10 +33,10 @@ const StatCards = () => {
                     bgColor = "#9698d6" 
                     color = "white" 
                     p = "2rem" 
-                    h = "fit-content" 
+                    flexGrow = "1"  
                     textAlign= "center" 
                     borderRadius= "10px"
-                    w = "14vw"
+                    w = {{base: "100%", xl: "14vw"}}
                     fontWeight = "bold"
                     >
                         <Text fontSize = "clamp(1.2rem,2vw,2.5rem)">{data?.sell_count}</Text>
@@ -47,10 +47,10 @@ const StatCards = () => {
                     bgColor = "#f77c87" 
                     color = "white" 
                     p = "2rem" 
-                    h = "fit-content" 
+                    flexGrow = "1"  
                     textAlign= "center" 
                     borderRadius= "10px"
-                    w = "14vw"
+                    w = {{base: "100%", xl: "14vw"}}
                     fontWeight = "bold"
                     >
                         <Text fontSize = "clamp(1.2rem,2vw,2.5rem)">{data?.unsold_count}</Text>
