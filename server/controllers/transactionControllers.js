@@ -19,30 +19,36 @@ export const seedData = async(req,res) => {
     res.status(200).json({msg: "Seed successfull"});
 }
 
-export const getAllTransactions = async(req,res) => {
-    const { page, month,search } = req.query;
-    const searchStr = String(search).toLowerCase();
-    const perPage = 10;
-    const resultingTransactions = [];
-    const transactions = await Transaction.find({}).skip((page - 1) * perPage).limit(perPage);
-    for(const transaction of transactions) {
-      const {title,description,price,dateOfSale} = transaction;
+export const getAllTransactions = async (req, res) => {
+  const { page = 1, month, search = '' } = req.query;
+  const searchStr = String(search).toLowerCase();
+  const perPage = 10;
+  const resultingTransactions = [];
+  const transactions = await Transaction.find({});
+  for (const transaction of transactions) {
+      const { title, description, price, dateOfSale } = transaction;
       const titleStr = title.toLowerCase();
       const descriptionStr = description.toLowerCase();
       const priceStr = String(price).toLowerCase();
-      if(titleStr.includes(searchStr) || descriptionStr.includes(searchStr) || priceStr.includes(searchStr)) {
-        if(checkMonth(month,dateOfSale)) {
-          resultingTransactions.push(transaction);
-        }
+      
+      if (titleStr.includes(searchStr) || descriptionStr.includes(searchStr) || priceStr.includes(searchStr)) {
+          if (checkMonth(month, dateOfSale)) {
+              resultingTransactions.push(transaction);
+          }
       }
-    }
-    res.json(resultingTransactions);
-}
+  }
+  const startIndex = (page - 1) * perPage;
+  const endIndex = startIndex + perPage;
+  const paginatedTransactions = resultingTransactions.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(resultingTransactions.length / perPage);
+  res.json({transactions: paginatedTransactions,pages: totalPages});
+};
 
 export const getTotalTransactionCount = async(req,res) => {
   const transactions = await Transaction.find({});
   res.status(200).json({total: transactions.length});
 }
+
 
 export const getStats = async(req,res,next,flag) => {
   const {month} = req.query;

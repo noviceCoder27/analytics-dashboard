@@ -6,13 +6,15 @@ import {  useToast } from "@chakra-ui/react";
 const useTransactionDetails = (month,page,search) => {
     const [stats,setStats] = useState(null);
     const [loading,setLoading] = useState(true);
+    const [totalPages,setTotalPages] = useState(1);
     const toast = useToast();
 
     useEffect(() => {
         const getStats = async() => {
             try {
                 const data = await fetchTransactionDetails(month,page,search);
-                setStats(data);
+                setStats(data.transactions);
+                setTotalPages(data.pages)
                 setLoading(false);
             } catch(err) {
                 toast({
@@ -28,7 +30,7 @@ const useTransactionDetails = (month,page,search) => {
         }
         getStats();
     },[month,page,search]);
-    return [stats,loading];
+    return [stats,totalPages,loading];
 }
 
 export default useTransactionDetails

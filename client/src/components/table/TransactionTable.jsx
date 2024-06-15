@@ -6,7 +6,7 @@ const TransactionTable = ({data}) => {
     const displayData = data?.map(item => (
         <TableItem item = {item} key = {item.id}/>
     ))
-
+    
     return (
         <Box 
         overflowX = "scroll"

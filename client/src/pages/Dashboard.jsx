@@ -4,8 +4,6 @@ import MonthSelect from "../components/MonthSelect"
 import { CiSearch } from "react-icons/ci";
 import { useState } from "react";
 import useTransactionDetails from "../hooks/useTransactionData";
-import useTransactionsCount from "../hooks/useTransactionCount";
-import { useMemo } from "react";
 import TransactionTable from "../components/table/TransactionTable";
 
 
@@ -13,16 +11,7 @@ const Dashboard = () => {
     const [search,setSearch] = useState("");
     const [month,setMonth] = useState(3);
     const [page,setPage] = useState(1);
-    const [data] = useTransactionDetails(month,page,search);
-    const totalItems = useTransactionsCount();
-    let totalPages = useMemo(() => {
-        let pages = 1;
-        if(totalItems) {
-            pages = totalItems.total/10;
-        }
-        return pages;
-    },[totalItems]);
-
+    const [data,totalPages] = useTransactionDetails(month,page,search);
     return (
         <Flex w= "100%" direction = {{base: "column",lg: "row"}}>
             <Navbar />
